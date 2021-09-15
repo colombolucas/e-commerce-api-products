@@ -11,31 +11,31 @@ import java.util.UUID;
 
 public interface CategoriaRepresentation {
 
-    class CreateCategoria{
+    @Data
+    @Getter
+    @Setter
+    class CreateCategoria {
 
         @NotNull(message = "O campo descrição não pode ser nulo")
-        @Size(max = 30, min = 1, message = "A validação deve ter no mínimo 30 caracteres")
+        @Size(max = 30, min = 1, message = "A descrição deve conter de 1 a 30 caracteres")
         private String descricao;
-
     }
+
     @Data
     @Getter
     @Setter
     @Builder
-    public class Detail{
-        private UUID id;
+    class Detail {
+        private Long id;
         private String descricao;
         private Categoria.Status status;
 
-        public static Detail from(Categoria categoria){
+        public static Detail from(Categoria categoria) {
             return Detail.builder()
                     .id(categoria.getId())
                     .descricao(categoria.getDescricao())
                     .status(categoria.getStatus())
                     .build();
-
         }
-
     }
-
 }
