@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 @Service
-public interface CategoriaRepository extends CrudRepository<Categoria, UUID>,
+public interface CategoriaRepository extends CrudRepository<Categoria, Long>,
         QuerydslPredicateExecutor<Categoria> {
 }
