@@ -1,9 +1,12 @@
 package br.senac.ecommerceapiprodutos.produto;
 
+import br.senac.ecommerceapiprodutos.categoria.Categoria;
+import br.senac.ecommerceapiprodutos.categoria.CategoriaService;
 import br.senac.ecommerceapiprodutos.exceptions.NotFoundException;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,15 +16,45 @@ import java.util.List;
 public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
+    private final CategoriaService categoriaService;
+    public Produto salvar(ProdutoRepresentation.CreateOrUpdate createOrUpdate) {
 
-    public Produto salvar() {
+        Categoria categoria = this.categoriaService.getCategoria(createOrUpdate.getCategoria());
 
-        return this.produtoRepository.save(new Produto());
+        Produto produto = Produto.builder()
+                .nome(createOrUpdate.getNome())
+                .descricao(createOrUpdate.getDescricao())
+                .complemento(createOrUpdate.getComplemento())
+                .fabricante(createOrUpdate.getFabricante())
+                .fornecedor(Strings.isEmpty(createOrUpdate.getFornecedor()) ? "" : createOrUpdate.getFornecedor())
+                .qtde(createOrUpdate.getQtde())
+                .valor(createOrUpdate.getValor())
+                .unidadeMedida(createOrUpdate.getUnidadeMedida())
+                .categoria(categoria)
+                .status(Produto.Status.ATIVO)
+                .build();
 
+        return this.produtoRepository.save(produto);
     }
-    public void atualizar(Long id) {
+    public Produto atualizar(Long id, ProdutoRepresentation.CreateOrUpdate createOrUpdate) {
 
-        Produto produto = this.buscarUm(id);
+        Produto produtoAntigo = this.buscarUm(id);
+
+        Categoria categoria = this.categoriaService.getCategoria(createOrUpdate.getCategoria());
+
+        Produto produtoAtualizado = produtoAntigo.toBuilder()
+        .nome(createOrUpdate.getNome())
+                .descricao(createOrUpdate.getDescricao())
+                .complemento(createOrUpdate.getComplemento())
+                .fabricante(createOrUpdate.getFabricante())
+                .fornecedor(Strings.isEmpty(createOrUpdate.getFornecedor()) ? "" : createOrUpdate.getFornecedor())
+                .qtde(createOrUpdate.getQtde())
+                .valor(createOrUpdate.getValor())
+                .unidadeMedida(createOrUpdate.getUnidadeMedida())
+                .categoria(categoria)
+                .build();
+
+        return this.produtoRepository.save(produtoAtualizado);
 
     }
 
