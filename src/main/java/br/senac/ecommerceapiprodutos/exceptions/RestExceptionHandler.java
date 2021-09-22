@@ -3,6 +3,8 @@ package br.senac.ecommerceapiprodutos.exceptions;
 
 
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -14,16 +16,16 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class RestExceptionHandler {
 
-    @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public ErrorPayload handleNotFoundException(Exception exception, HttpServletRequest request){
-
+    public ErrorPayload handleValidateException(MethodArgumentNotValidException exception, HttpServletRequest request){
+        BindingResult result = exception.getBindingResult();
         return ErrorPayload.builder()
                 .timestamp(LocalDateTime.now())
-                .Status(HttpStatus.NOT_FOUND.value())
-                .error(HttpStatus.NOT_FOUND.getReasonPhrase())
-                .message(exception.getMessage())
+                .Status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                .error(HttpStatus.UNPROCESSABLE_ENTITY.getReasonPhrase())
+                .message(result.getFieldErrors().get(0).getDefaultMessage())
                 .path(request.getContextPath() + request.getServletPath())
                 .build();
 
