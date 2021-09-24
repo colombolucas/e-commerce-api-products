@@ -39,7 +39,6 @@ public interface CategoriaRepresentation {
             return Detail.builder()
                     .id(categoria.getId())
                     .descricao(categoria.getDescricao())
-                    .status(categoria.getStatus())
                     .build();
         }
     }

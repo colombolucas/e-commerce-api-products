@@ -2,6 +2,7 @@ package br.senac.ecommerceapiprodutos.produto;
 
 import br.senac.ecommerceapiprodutos.categoria.Categoria;
 import br.senac.ecommerceapiprodutos.categoria.CategoriaService;
+import br.senac.ecommerceapiprodutos.categoria.QCategoria;
 import br.senac.ecommerceapiprodutos.exceptions.NotFoundException;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -16,10 +17,9 @@ import java.util.List;
 public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
-    private final CategoriaService categoriaService;
-    public Produto salvar(ProdutoRepresentation.CreateOrUpdate createOrUpdate) {
 
-        Categoria categoria = this.categoriaService.getCategoria(createOrUpdate.getCategoria());
+    public Produto salvar(ProdutoRepresentation.CreateOrUpdate createOrUpdate, Categoria categoria) {
+
 
         Produto produto = Produto.builder()
                 .nome(createOrUpdate.getNome())
@@ -36,11 +36,10 @@ public class ProdutoService {
 
         return this.produtoRepository.save(produto);
     }
-    public Produto atualizar(Long id, ProdutoRepresentation.CreateOrUpdate createOrUpdate) {
+    public Produto atualizar(Long id, ProdutoRepresentation.CreateOrUpdate createOrUpdate, Categoria categoria) {
 
         Produto produtoAntigo = this.buscarUm(id);
 
-        Categoria categoria = this.categoriaService.getCategoria(createOrUpdate.getCategoria());
 
         Produto produtoAtualizado = produtoAntigo.toBuilder()
         .nome(createOrUpdate.getNome())
@@ -71,5 +70,8 @@ public class ProdutoService {
     }
     public void deletar(Long id){
         Produto produto = this.buscarUm(id);
+        produto.setStatus(Produto.Status.INATIVO);
+        this.produtoRepository.save(produto);
+
     }
 }

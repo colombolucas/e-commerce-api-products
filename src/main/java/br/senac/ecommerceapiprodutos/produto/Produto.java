@@ -35,11 +35,9 @@ public class Produto {
 
     @NotNull(message = "O campo valor não pode ser nulo")
     @Column(name = "VALOR")
-    @NotEmpty(message = "O campo valor não pode ser vazio")
     private Double valor;
 
     @NotNull(message = "O campo unidade de medida não pode ser nulo")
-    @NotEmpty(message = "O campo unidade de medida não pode ser vazio")
     @Column(name = "UNIDADE_MEDIDA")
     private UnidadeMedida unidadeMedida;
 
@@ -55,7 +53,6 @@ public class Produto {
     private String fornecedor;
 
     @NotNull(message = "O campo status não pode ser nulo")
-    @NotEmpty(message = "O campo status não pode ser vazio")
     @Column(name = "Status")
     private Status status;
 
