@@ -2,6 +2,7 @@ package br.senac.ecommerceapiprodutos.produto;
 
 import br.senac.ecommerceapiprodutos.categoria.Categoria;
 import lombok.*;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder(toBuilder = true)
 @Entity(name = "PRODUTO")
+@QuerydslPredicate
 public class Produto {
 
     @Id

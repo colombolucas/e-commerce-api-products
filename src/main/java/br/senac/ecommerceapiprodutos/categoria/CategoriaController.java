@@ -2,12 +2,15 @@ package br.senac.ecommerceapiprodutos.categoria;
 
 
 import br.senac.ecommerceapiprodutos.util.Paginacao;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.data.annotation.QueryAnnotation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,9 +50,15 @@ public class CategoriaController {
 
     @GetMapping("/")
     public ResponseEntity<Paginacao> getAll (
+
+          //  @QuerydslPredicate(root = Categoria.class) Predicate filtroCategoria,
+
         @RequestParam(name = "filtro", required = false, defaultValue = "") String filtro,
-        @RequestParam(name = "paginaSelecionada", required = false, defaultValue = "0") Integer paginaSelecionada,
-        @RequestParam(name = "tamanhoPagina", defaultValue = "20") Integer tamanhoPagina) {
+            @RequestParam(name = "paginaSelecionada", required = false, defaultValue = "0") Integer paginaSelecionada,
+            @RequestParam(name = "tamanhoPagina", defaultValue = "20") Integer tamanhoPagina)  {
+
+     //   BooleanExpression filter = Object.isNull(filtroCategoria) ? QCategoria.categoria.status.eq(Categoria.Status.Ativo) :
+     //           QCategoria.categoria.status.eq(Categoria.Status.Ativo).and(filtroCategoria);
 
         BooleanExpression filter = Strings.isEmpty(filtro) ? QCategoria.categoria.status.eq(Categoria.Status.Ativo) :
                 QCategoria.categoria.status.eq(Categoria.Status.Ativo)

@@ -18,5 +18,4 @@ public class Paginacao {
     private Boolean proximaPagina;
     private List<?> conteudo;
 
-
 }
