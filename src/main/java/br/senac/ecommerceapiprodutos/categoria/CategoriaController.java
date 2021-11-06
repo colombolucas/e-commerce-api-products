@@ -23,6 +23,7 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @RestController
 @RequestMapping("/categoria")
 @AllArgsConstructor
+@CrossOrigin("*")
 
 public class CategoriaController {
 
